@@ -1,0 +1,15 @@
+#!/usr/bin/env sh
+
+set -e
+
+hash docker > /dev/null 2>&1 || {
+  echo "Could not find Docker. Please install Docker first."
+  exit 1
+}
+
+id -Gn | grep docker > /dev/null 2>&1 || {
+  echo "You are not permitted to run Docker. Please run \`sudo usermod -aG docker $USER\` first."
+  exit 1
+}
+
+docker run -v $PWD:$PWD -v /var/run/docker.sock:/var/run/docker.sock -e "HOME=$HOME" -w $PWD -ti dduportal/docker-compose:latest "$@"

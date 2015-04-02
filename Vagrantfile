@@ -4,7 +4,7 @@
 require_relative 'vagrant_rancheros_guest_plugin.rb'
 
 # To enable rsync folder share change to false
-$rsync_folder_disabled = true
+$rsync_folder_disabled = false
 $number_of_nodes = 1
 $vm_mem = "1024"
 $vb_gui = false
@@ -17,6 +17,8 @@ $vb_gui = false
 Vagrant.configure(2) do |config|
   config.vm.box   = "rancherio/rancheros"
   config.vm.box_version = ">=0.2.0"
+
+  config.vm.provision :shell, :path => "bootstrap.sh"
 
   (1..$number_of_nodes).each do |i|
     hostname = "rancher-%02d" % i
